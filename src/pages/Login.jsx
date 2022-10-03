@@ -5,24 +5,15 @@ import { MdError } from 'react-icons/md'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 import { BsFillPersonFill } from 'react-icons/bs'
 import { FaLock } from 'react-icons/fa'
-import { signInWithEmailAndPassword } from "firebase/auth"
-import { auth } from '../firebase'
 import AuthContext from '../stores/authContext'
 import { RiLoader3Fill } from 'react-icons/ri'
 
 const Login = () => {
 
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
-  const authContext = useContext(AuthContext)
-  let { currentUser } = authContext
-
-  useEffect(() => {
-    if(currentUser){
-      navigate('/')
-      return
-    }
-  }, [navigate, currentUser])
+  // const authContext = useContext(AuthContext)
+  // const { currentUser } = authContext
 
   const [emailInput, setEmail] = useState(false)
   const [passwordInput, setPassword] = useState(true)
@@ -55,27 +46,9 @@ const Login = () => {
     setError(false)
     setLoading(true)
     try {
-      await signInWithEmailAndPassword(auth, emailInput, passwordRef.current.value)
       setLoading(false)
-      navigate('/')
     } catch (error) {
-      const errorCode = error.code
-      if(errorCode === 'auth/invalid-email'){
-        setError("Entered Email is incorrect")
-        setLoading(false)
-        setEmail(false)
-        setPassword(true)
-      }
-      if(errorCode === 'auth/user-not-found'){
-        setError("User not Found")
-        setLoading(false)
-        setEmail(false)
-        setPassword(true)
-      }
-      if(errorCode === 'auth/wrong-password'){
-        setError("Entered Password is incorrect")
-        setLoading(false)
-      }
+      console.log(error)
     }
   }
 
@@ -104,7 +77,7 @@ const Login = () => {
             <div className="input-field" onKeyDown={e => e.code === "Enter" && handleLogin()} style={{ marginTop: '1rem' }}>
               <span className='icon'><FaLock /></span>
               <input autoFocus ref={passwordRef} id='password' className='input-box' placeholder='Enter your Password' type={!viewPassword ? 'password' : 'text'} />
-              <span className='icon view-pw' onClick={()=>togglePassword()}>{!viewPassword ? <AiFillEye /> : <AiFillEyeInvisible />}</span>
+              <span className='icon view-pw' onClick={()=>setViewPassword(!viewPassword)}>{!viewPassword ? <AiFillEye /> : <AiFillEyeInvisible />}</span>
             </div>
             {error && <div className='error'><span><MdError /></span>{error}</div>}
             <button className='btn' style={!isLoading ? {marginTop: '1.5rem'} : {marginTop: '1.5rem', padding: '6.5px 0'}} onClick={()=>handleLogin()}>{!isLoading ? 'Login' : <span className='loadingIcon'><RiLoader3Fill /></span> }</button>
