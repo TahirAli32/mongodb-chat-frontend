@@ -4,14 +4,11 @@ import { Link, useNavigate } from "react-router-dom"
 import { MdError } from 'react-icons/md'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 import { FiUpload } from 'react-icons/fi'
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
-import { doc, setDoc } from 'firebase/firestore'
-import { auth, db, storage } from '../firebase'
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 import { RiLoader3Fill } from 'react-icons/ri'
 
 const Signup = () => {
-  const navigate = useNavigate()
+
+  // const navigate = useNavigate()
 
   const [viewPassword, setViewPassword] = useState(false)
   const [error, setError] = useState(false)
@@ -32,53 +29,10 @@ const Signup = () => {
 
     setLoading(true)
     try{
-      const res = await createUserWithEmailAndPassword(auth, emailRef.current.value, passwordRef.current.value)
 
-      const storageRef = ref(storage, usernameRef.current.value)
-
-      const uploadTask = uploadBytesResumable(storageRef, profile);
-
-      uploadTask.on('state_changed', 
-        (snapshot) => {
-        }, 
-        (error) => {
-          setError(error)
-        },
-        () => {
-          setError(false)
-          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-            await updateProfile(res.user, { 
-              displayName: nameRef.current.value,
-              photoURL: downloadURL
-            })
-            await setDoc(doc(db, "users", res.user.uid),{
-              uid: res.user.uid,
-              displayName: nameRef.current.value,
-              email: emailRef.current.value,
-              username: usernameRef.current.value,
-              photoURL: downloadURL
-            })
-            await setDoc(doc(db, "userChats", res.user.uid), {})
-            setLoading(false)
-            navigate('/')
-          })
-        }
-      )
     }
     catch(error){
-      const errorCode = error.code
-      if(errorCode === 'auth/email-already-in-use') {
-        setError("Email Already Exists")
-        setLoading(false)
-      }
-      if(errorCode === 'auth/invalid-email') {
-        setError("Please Enter a Valid Email")
-        setLoading(false)
-      }
-      if(errorCode === 'auth/weak-password') {
-        setError("Password should be 6 characters long")
-        setLoading(false)
-      }
+      console.log(error)
     }
   }
 

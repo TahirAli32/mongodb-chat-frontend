@@ -5,7 +5,7 @@ import { MdError } from 'react-icons/md'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 import { BsFillPersonFill } from 'react-icons/bs'
 import { FaLock } from 'react-icons/fa'
-import AuthContext from '../stores/authContext'
+// import AuthContext from '../stores/authContext'
 import { RiLoader3Fill } from 'react-icons/ri'
 
 const Login = () => {
@@ -24,9 +24,6 @@ const Login = () => {
   const emailRef = useRef()
   const passwordRef = useRef()
 
-  const togglePassword = () => {
-    setViewPassword(!viewPassword)
-  }
 
   const handleEmail = () => {
     if(!emailRef.current.value.match(/([^\s])/)){
