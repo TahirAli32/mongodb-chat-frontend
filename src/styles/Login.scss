@@ -83,9 +83,10 @@ main {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: 1px;
             color: #b92821;
             font-size: 14px;
+            width: 75%;
+            margin: 1px auto 0 auto;
             height: max-content;
             span {
                 font-size: 17px;
@@ -104,6 +105,18 @@ main {
             cursor: pointer;
             &:hover {
                 background-color: green;
+            }
+        }
+        .otherChecks{
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            .forgotPw{
+                color: green;
+                cursor: pointer;
+                &:hover{
+                    text-decoration: underline;
+                }
             }
         }
     }

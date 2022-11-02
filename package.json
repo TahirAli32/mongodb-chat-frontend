@@ -1,5 +1,5 @@
 {
-  "name": "firebase-chat",
+  "name": "mongodb-chat",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -10,8 +10,8 @@
     "js-cookie": "^3.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-icons": "^4.4.0",
-    "react-router-dom": "^6.4.1",
+    "react-icons": "^4.6.0",
+    "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
     "sass": "^1.55.0",
     "timeago.js": "^4.0.2",

@@ -1,7 +1,8 @@
 // import { useState, useEffect, useContext } from 'react'
-// import '../styles/Conversation.scss'
+import '../styles/Conversation.scss'
 // import AuthContext from '../stores/authContext'
 // import MessagesContext from '../stores/messagesContext'
+import pic from '../assets/pic.jpg'
 
 const Conversation = () => {
 
@@ -13,7 +14,7 @@ const Conversation = () => {
   return (
     <div className='conversation'>
       <div>
-        <img src={undefined} alt="img" className="conversationImg" />
+        <img src={pic} alt="img" className="conversationImg" />
         <span className='conversationName'>Converstion Name</span>
       </div>
     </div>
