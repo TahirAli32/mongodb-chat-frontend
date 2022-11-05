@@ -17,9 +17,9 @@ export const MessagesContextProvider = ({children}) => {
             case "CHANGE_USER":
                 return {
                     user: action.payload,
-                    chatID: currentUser.uid > action.payload.uid
-                    ? currentUser.uid + action.payload.uid
-                    : action.payload.uid + currentUser.uid
+                    chatID: currentUser.id > action.payload.id
+                    ? currentUser.id + action.payload.id
+                    : action.payload.id + currentUser.id
                 }
             case "NULL":
                 return{

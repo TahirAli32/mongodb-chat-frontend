@@ -62,7 +62,8 @@ const Login = () => {
 
   const handleSuccess = (data) => {
     dispatch({type: "FETCH_SUCCESS", payload: data})
-    navigate('/')
+    // navigate('/')
+    window.location = "/"
   }
 
   const handleError = (data) => {

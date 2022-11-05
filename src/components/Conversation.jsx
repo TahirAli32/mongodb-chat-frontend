@@ -1,21 +1,38 @@
-// import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import '../styles/Conversation.scss'
-// import AuthContext from '../stores/authContext'
-// import MessagesContext from '../stores/messagesContext'
+import MessagesContext from '../stores/messagesContext'
 import pic from '../assets/pic.jpg'
+import axios from 'axios'
 
-const Conversation = () => {
+const Conversation = ({conversation}) => {
 
-  // const { currentUser } = useContext(AuthContext)
-  // const { dispatch } = useContext(MessagesContext)
+  const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST
 
-  // const [chats, setChats] = useState([])
+  const { dispatch } = useContext(MessagesContext)
+
+  const [user, setUser] = useState([])
+
+  useEffect(()=>{
+    const fetchConversation = async () => {
+      const res = await axios.get(`${BACKEND_HOST}/api/user/${conversation}`)
+      try {
+        setUser(res.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchConversation()
+  }, [BACKEND_HOST, conversation])
+
+  const handleSelect = (userData) => {
+    dispatch({type: "CHANGE_USER", payload: userData})
+  }
 
   return (
     <div className='conversation'>
-      <div>
-        <img src={pic} alt="img" className="conversationImg" />
-        <span className='conversationName'>Converstion Name</span>
+      <div onClick={() => handleSelect(user)}>
+        <img src={user.profileURL ? user.profileURL : pic} alt="img" className="conversationImg" />
+        <span className='conversationName'>{user.name}</span>
       </div>
     </div>
   )

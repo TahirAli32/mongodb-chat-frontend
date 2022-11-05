@@ -9,6 +9,19 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            .chatMenuMiddle{
+                height: 100%;
+                overflow-y: auto;
+            }
+            .chatMenuMiddle::-webkit-scrollbar {
+                width: 5px;
+            }
+            .chatMenuMiddle::-webkit-scrollbar-thumb {
+                background: #a8a8a8;
+            }
+            .chatMenuMiddle::-webkit-scrollbar-thumb:hover {
+                background: #c5c4c4; 
+            }
             .chatMenuBottom{
                 display: flex;
                 justify-content: center;
@@ -96,6 +109,15 @@
                 padding: 20px;
                 height: 100%;
                 overflow-y: auto;
+            }
+            .chatBoxTop::-webkit-scrollbar {
+                width: 6px;
+            }
+            .chatBoxTop::-webkit-scrollbar-thumb {
+                background: #929292; 
+            }
+            .chatBoxTop::-webkit-scrollbar-thumb:hover {
+                background: #616161; 
             }
             .chatBoxBottom{
                 margin-top: 5px;
