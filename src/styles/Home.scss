@@ -70,7 +70,9 @@
             padding: 10px;
             cursor: pointer;
             margin-top: 10px;
-            border-bottom: 1px solid rgb(0, 190, 190);
+            &:last-child{
+                border-bottom: 1px solid rgb(0, 190, 190);
+            }
             &:hover{
                 background-color: rgba(2, 179, 179, 0.25);
             }

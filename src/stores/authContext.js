@@ -11,30 +11,23 @@ export const AuthContextProvider = ({children}) => {
     const [currentUser, setCurrentUser] = useState("")
 
     const authToken = Cookies.get('authToken')
-    // const valdiateToken = Cookies.get('done')
 
     useEffect(() => {
-    //   if(!valdiateToken){
         const tokenValidation = async () => {
-            // console.log('token validation run')
-            const res = await axios.post(`${BACKEND_HOST}/api/auth/validatetoken`, {authToken}, { withCredentials: true })
-            if(res.data.error){
+            const res = await axios.post(`${BACKEND_HOST}/api/auth/validatetoken`, { authToken }, { withCredentials: true })
+            if (res.data.error) {
                 Cookies.remove('authToken')
                 setCurrentUser("")
                 console.log('auth removed')
                 return
             }
-            else{
-                // console.log(res.data.success.id)
+            else {
                 setCurrentUser(res.data.success)
                 return
             }
         }
         tokenValidation()
-    //   }
     }, [BACKEND_HOST, authToken])
-    
-
 
     return(
         <AuthContext.Provider value={{ currentUser }}>

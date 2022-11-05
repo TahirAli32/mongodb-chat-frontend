@@ -30,15 +30,14 @@ const Signup = () => {
 
   const nameRef = useRef()
   const emailRef = useRef()
-  const usernameRef = useRef()
   const passwordRef = useRef()
 
   const [state, dispatch] = useReducer(requestReducer, INITIAL_STATE)
 
   const handleSignUp = async () => {
     // document.title = 'CHCHCHC'
-    // if(!nameRef.current.value.match(/([^\s])/) || !usernameRef.current.value.match(/([^\s])/) || !emailRef.current.value.match(/([^\s])/) || !passwordRef.current.value.match(/([^\s])/) || profile === "" ){
-    if(!nameRef.current.value.match(/([^\s])/) || !usernameRef.current.value.match(/([^\s])/) || !emailRef.current.value.match(/([^\s])/) || !passwordRef.current.value.match(/([^\s])/)){
+    // if(!nameRef.current.value.match(/([^\s])/) || !emailRef.current.value.match(/([^\s])/) || !passwordRef.current.value.match(/([^\s])/) || profile === "" ){
+    if(!nameRef.current.value.match(/([^\s])/) || !emailRef.current.value.match(/([^\s])/) || !passwordRef.current.value.match(/([^\s])/)){
       dispatch({type: "FETCH_ERROR", payload: "All fields are required"})
       return
     }
@@ -71,10 +70,6 @@ const Signup = () => {
         <div className="inputField">
           <input autoFocus ref={nameRef} id='name' placeholder=" " className='inputBox' type="text" />
           <label htmlFor="name" className='inputLabel'>Full Name</label>
-        </div>
-        <div className="inputField">
-          <input ref={usernameRef} id='username' placeholder=" " className='inputBox'  type="text" />
-          <label htmlFor="username" className='inputLabel'>Username</label>
         </div>
         <div className="inputField">
           <input ref={emailRef} id='email' placeholder=" " className='inputBox' type="text" />
