@@ -8,7 +8,7 @@ export const MessagesContextProvider = ({children}) => {
     const { currentUser } = useContext(AuthContext)
 
     const INITIAL_STATE = {
-        chatID: "null",
+        chatID: null,
         user: {}
     }
 
@@ -23,7 +23,7 @@ export const MessagesContextProvider = ({children}) => {
                 }
             case "NULL":
                 return{
-                    chatID: "null",
+                    chatID: null,
                     user: {}
                 }
             default:

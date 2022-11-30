@@ -9,6 +9,10 @@ import MessagesContext from '../stores/messagesContext'
 import pic from '../assets/pic.jpg'
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import { io } from 'socket.io-client'
+import { useMemo } from 'react'
+
+// let socket = io.connect('ws://localhost:4000')
 
 const Messenger = () => {
 
@@ -16,20 +20,40 @@ const Messenger = () => {
 
     const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST
 
+    const [socket, setSocket] = useState(null)
+    
     const { currentUser } = useContext(AuthContext)
     const { dispatch, data } = useContext(MessagesContext)
 
     const userNameRef = useRef()
 
+    const [randomKey, setRandomKey] = useState(0)
     const [conversations, setConversations] = useState([])
     const [messages, setMessages] = useState([])
     const [searchedUsers, setSearchedUsers] = useState([])
     const [text, setText] = useState("")
 
+    useMemo(()=>{
+        if(currentUser){
+            setSocket(io(BACKEND_HOST.replace('http://', 'ws://')))
+            return
+        }
+    }, [BACKEND_HOST, currentUser])
+
     useEffect(() => {
         if(currentUser) return
         navigate('/login')
-    }, [currentUser, navigate])
+    }, [currentUser, navigate, BACKEND_HOST])
+
+    useEffect(()=>{
+        // console.log('run')
+        if(data.chatID){
+            socket.emit('openChat', data.chatID)
+        }
+        socket?.on("receiveMessage", () => {
+            setRandomKey(Math.random())
+        })
+    }, [data, socket])
 
     useEffect(()=>{
         const fetchConversation = async () => {
@@ -49,14 +73,14 @@ const Messenger = () => {
             if(data.chatID){
                 const messages = await axios.get(`${BACKEND_HOST}/api/chat/${data.chatID}`)
                 try {
-                    setMessages(messages.data[0].messages)
+                    setMessages(messages.data[0]?.messages)
                 } catch (error) {
                     console.log(error)
                 }
             }
         }
         fetchMessages()
-    }, [BACKEND_HOST, data])
+    }, [BACKEND_HOST, data, randomKey])
 
     const handleSend = async () => {
         if(!text.match(/([^\s])/)){
@@ -73,6 +97,8 @@ const Messenger = () => {
         } catch (error) {
             console.log(error)
         }
+        socket.emit("sendMessage", { chatID: data.chatID })
+        setRandomKey(Math.random())
     }
 
     const handleSearch = async () => {
@@ -128,7 +154,7 @@ const Messenger = () => {
                         ))}
                     </div>
                     <div className='chatMenuMiddle'>
-                        {conversations.map( c => (
+                        {conversations?.map( c => (
                             <Conversation key={c} conversation={c} />
                         ))}
                     </div>
