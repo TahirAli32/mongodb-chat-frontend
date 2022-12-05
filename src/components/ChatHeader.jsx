@@ -8,8 +8,6 @@ const ChatHeader = () => {
 
   const { data, dispatch } = useContext(MessagesContext)
 
-  // console.log(data)
-
   return (
     <div className='header'>
         <div className="chatUser">
