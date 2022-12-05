@@ -8,7 +8,7 @@ const Conversation = ({conversation}) => {
 
   const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST
 
-  const { dispatch } = useContext(MessagesContext)
+  const { dispatch, data } = useContext(MessagesContext)
 
   const [user, setUser] = useState([])
 
@@ -25,6 +25,7 @@ const Conversation = ({conversation}) => {
   }, [BACKEND_HOST, conversation])
 
   const handleSelect = (userData) => {
+    if(userData.id === data.user.id) return
     dispatch({type: "CHANGE_USER", payload: userData})
   }
 
