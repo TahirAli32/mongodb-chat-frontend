@@ -18,7 +18,6 @@ export const AuthContextProvider = ({children}) => {
             if (res.data.error) {
                 Cookies.remove('authToken')
                 setCurrentUser("")
-                console.log('auth removed')
                 return
             }
             else {
