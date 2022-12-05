@@ -12,8 +12,6 @@ import Cookies from 'js-cookie'
 import { io } from 'socket.io-client'
 import { useMemo } from 'react'
 
-// let socket = io.connect('ws://localhost:4000')
-
 const Messenger = () => {
 
     const navigate = useNavigate()
@@ -27,7 +25,6 @@ const Messenger = () => {
 
     const userNameRef = useRef()
 
-    const [randomKey, setRandomKey] = useState(0)
     const [conversations, setConversations] = useState([])
     const [messages, setMessages] = useState([])
     const [searchedUsers, setSearchedUsers] = useState([])
@@ -46,13 +43,10 @@ const Messenger = () => {
     }, [currentUser, navigate, BACKEND_HOST])
 
     useEffect(()=>{
-        // console.log('run')
         if(data.chatID){
             socket.emit('openChat', data.chatID)
+            socket?.on("receiveMessage", (data) => setMessages(prev => [...prev, data]))
         }
-        socket?.on("receiveMessage", () => {
-            setRandomKey(Math.random())
-        })
     }, [data, socket])
 
     useEffect(()=>{
@@ -80,25 +74,30 @@ const Messenger = () => {
             }
         }
         fetchMessages()
-    }, [BACKEND_HOST, data, randomKey])
+    }, [BACKEND_HOST, data])
 
     const handleSend = async () => {
         if(!text.match(/([^\s])/)){
             return
         }
-        let msgData = {
+        let dbData = {
             chatID: data.chatID,
             senderID: currentUser.id,
             message: text
         }
+        let socketData = {
+            message: text,
+            senderID: currentUser.id,
+            sentAt: new Date().toISOString()
+        }
         try {
-            await axios.post(`${BACKEND_HOST}/api/chat`, msgData)
+            await axios.post(`${BACKEND_HOST}/api/chat`, dbData)
+            socket.emit("sendMessage", { chatID: data.chatID, socketData })
+            setMessages(prev => [...prev, socketData])
             setText("")
         } catch (error) {
             console.log(error)
         }
-        socket.emit("sendMessage", { chatID: data.chatID })
-        setRandomKey(Math.random())
     }
 
     const handleSearch = async () => {
@@ -168,9 +167,9 @@ const Messenger = () => {
                     <div className="chatBoxWrapper">
                         <ChatHeader />
                         <div className="chatBoxTop">
-                            {messages?.map( m => (
+                            {messages?.map( (m,i) => (
                                 <Message 
-                                    key={m._id}
+                                    key={i}
                                     sentAt={m.sentAt}
                                     message={m.message}
                                     own={m.senderID === currentUser.id ? true : false} 
