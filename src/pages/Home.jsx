@@ -17,6 +17,7 @@ const Messenger = () => {
     const navigate = useNavigate()
 
     const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST
+    const SOCKET_HOST = process.env.REACT_APP_SOCKET_HOST
 
     const [socket, setSocket] = useState(null)
     
@@ -32,10 +33,11 @@ const Messenger = () => {
 
     useMemo(()=>{
         if(currentUser){
-            setSocket(io(BACKEND_HOST.replace('http://', 'ws://')))
+            // setSocket(io(BACKEND_HOST.replace('http://', 'ws://')))
+            setSocket(io(SOCKET_HOST))
             return
         }
-    }, [BACKEND_HOST, currentUser])
+    }, [SOCKET_HOST, currentUser])
 
     useEffect(() => {
         if(currentUser) return
@@ -121,10 +123,11 @@ const Messenger = () => {
     }
 
     const handleSelect = async (userData) => {
+        console.log(userData)
         await axios.post(`${BACKEND_HOST}/api/conversation`, {currentUserID: currentUser.id, friendID: userData.id})
         dispatch({type: "CHANGE_USER", payload: userData})
-        setSearchedUsers([])
-        userNameRef.current.value = null
+        // setSearchedUsers([])
+        // userNameRef.current.value = null
     }
 
     const handleLogout = () => {
