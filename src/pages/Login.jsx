@@ -62,11 +62,10 @@ const Login = () => {
 
   const handleSuccess = (data) => {
     dispatch({type: "FETCH_SUCCESS", payload: data})
+    console.log(data)
     // navigate('/')
     // console.log(data)
-    setTimeout(()=>{
-      window.location = "/"
-    }, 1500)
+    // window.location = "/"
   }
 
   const handleError = (data) => {
