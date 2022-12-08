@@ -25,7 +25,11 @@ export const AuthContextProvider = ({children}) => {
                 return
             }
         }
-        tokenValidation()
+        if(authToken){
+            tokenValidation()
+        }else{
+            setCurrentUser("")
+        }
     }, [BACKEND_HOST, authToken])
 
     return(
