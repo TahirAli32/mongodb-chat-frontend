@@ -33,17 +33,18 @@ const Messenger = () => {
 
     useMemo(()=>{
         if(currentUser){
-            // setSocket(io(BACKEND_HOST.replace('http://', 'ws://')))
-            setSocket(io(SOCKET_HOST))
+            setSocket(io(SOCKET_HOST, { withCredentials: true }))
             return
         }
     }, [SOCKET_HOST, currentUser])
 
+    // Checking User Auth Login Status
     useEffect(() => {
         if(currentUser) return
         navigate('/login')
     }, [currentUser, navigate, BACKEND_HOST])
 
+    // Socket useEffect
     useEffect(()=>{
         if(data.chatID){
             socket.emit('openChat', data.chatID)
@@ -51,6 +52,7 @@ const Messenger = () => {
         }
     }, [data, socket])
 
+    // fetchCoversation useEffect
     useEffect(()=>{
         const fetchConversation = async () => {
             const conversations = await axios.get(`${BACKEND_HOST}/api/conversation/${currentUser.id}`)
@@ -63,6 +65,7 @@ const Messenger = () => {
         fetchConversation()
     }, [BACKEND_HOST, currentUser.id])
 
+    // fetchMessages useEffect
     useEffect(()=>{
         setMessages([])
         const fetchMessages = async () => {
