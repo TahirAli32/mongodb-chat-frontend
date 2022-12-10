@@ -13,7 +13,7 @@
     "react-icons": "^4.7.1",
     "react-router-dom": "^6.4.5",
     "react-scripts": "5.0.1",
-    "sass": "^1.56.1",
+    "sass": "^1.56.2",
     "socket.io-client": "^4.5.4",
     "timeago.js": "^4.0.2",
     "web-vitals": "^2.1.4"
