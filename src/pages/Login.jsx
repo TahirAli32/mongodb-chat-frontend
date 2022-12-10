@@ -9,6 +9,7 @@ import AuthContext from '../stores/authContext'
 import { RiLoader3Fill } from 'react-icons/ri'
 import { INITIAL_STATE, requestReducer } from '../stores/requestReducer'
 import axios from 'axios'
+import Cookies from 'js-cookie'
 
 const Login = () => {
 
@@ -62,6 +63,7 @@ const Login = () => {
 
   const handleSuccess = (data) => {
     dispatch({type: "FETCH_SUCCESS", payload: data})
+    Cookies.set('authToken', data.token, data.tokenInfo)
     window.location = "/"
   }
 
