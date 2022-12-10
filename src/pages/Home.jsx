@@ -17,7 +17,6 @@ const Messenger = () => {
     const navigate = useNavigate()
 
     const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST
-    const SOCKET_HOST = process.env.REACT_APP_SOCKET_HOST
 
     const [socket, setSocket] = useState(null)
     
@@ -27,16 +26,17 @@ const Messenger = () => {
     const userNameRef = useRef()
 
     const [conversations, setConversations] = useState([])
+    const [randomKey, setRandomKey] = useState(0)
     const [messages, setMessages] = useState([])
     const [searchedUsers, setSearchedUsers] = useState([])
     const [text, setText] = useState("")
 
     useMemo(()=>{
         if(currentUser){
-            setSocket(io(SOCKET_HOST, { withCredentials: true }))
+            setSocket(io(BACKEND_HOST, { withCredentials: true }))
             return
         }
-    }, [SOCKET_HOST, currentUser])
+    }, [BACKEND_HOST, currentUser])
 
     // Checking User Auth Login Status
     useEffect(() => {
@@ -46,11 +46,15 @@ const Messenger = () => {
 
     // Socket useEffect
     useEffect(()=>{
-        if(data.chatID){
-            socket.emit('openChat', data.chatID)
-            socket?.on("receiveMessage", (data) => setMessages(prev => [...prev, data]))
+        if(currentUser){
+            socket.emit('userJoin', currentUser)
+            socket?.on("newConversationReceive", (userData) => setRandomKey(Math.random()))
+            if(data.chatID){
+                socket.emit('openChat', data.chatID)
+                socket?.on("receiveMessage", (data) => setMessages(prev => [...prev, data]))
+            }
         }
-    }, [data, socket])
+    }, [data, socket, currentUser])
 
     // fetchCoversation useEffect
     useEffect(()=>{
@@ -63,7 +67,7 @@ const Messenger = () => {
             }
         }
         fetchConversation()
-    }, [BACKEND_HOST, currentUser.id])
+    }, [BACKEND_HOST, currentUser.id, randomKey])
 
     // fetchMessages useEffect
     useEffect(()=>{
@@ -126,11 +130,14 @@ const Messenger = () => {
     }
 
     const handleSelect = async (userData) => {
-        console.log(userData)
-        await axios.post(`${BACKEND_HOST}/api/conversation`, {currentUserID: currentUser.id, friendID: userData.id})
+        const res = await axios.post(`${BACKEND_HOST}/api/conversation`, {currentUserID: currentUser.id, friendID: userData.id})
         dispatch({type: "CHANGE_USER", payload: userData})
-        // setSearchedUsers([])
-        // userNameRef.current.value = null
+        if(!res.data?.oldConversation){
+            socket.emit("newConversationSend", {userData, currentUser} )
+            setConversations(prev => [...prev, userData.id])
+        }
+        setSearchedUsers([])
+        userNameRef.current.value = null
     }
 
     const handleLogout = () => {
