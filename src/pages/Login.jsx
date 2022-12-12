@@ -122,7 +122,7 @@ const Login = () => {
               <p className='forgotPw'>Forgot Password?</p>
             </div>
             {state.error && <div className='error' style={{ marginTop: '.5rem'}}><span><MdError /></span>{state.errorMessage}</div>}
-            <button className='btn' style={!state.loading ? {marginTop: '1.5rem'} : {marginTop: '1.5rem', padding: '6.5px 0'}} onClick={()=>handleLogin()}>{!state.loading ? 'Login' : <span className='loadingIcon'><RiLoader3Fill /></span> }</button>
+            <button className='btn' disabled={!state.loading ? false : true} style={!state.loading ? {marginTop: '1.5rem'} : {marginTop: '1.5rem', padding: '6.5px 0', cursor: 'no-drop'}} onClick={()=>handleLogin()}>{!state.loading ? 'Login' : <span className='loadingIcon'><RiLoader3Fill /></span> }</button>
           </div>
         }
       </div>
