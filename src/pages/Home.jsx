@@ -152,12 +152,12 @@ const Messenger = () => {
                     <div className="chatMenuTop">
                         <div className='header'>
                             <div className="currentUser">
-                                <img src={pic} alt="img" className="currentUserImg" />
+                                <img src={currentUser.profileURL ? currentUser.profileURL : pic} alt="img" className="currentUserImg" />
                                 <span>{currentUser.name}</span>
                             </div>
                         </div>
                         {/* <input type="text" className='chatMenuInput' ref={userNameRef} onChange={() => handleSearch()} onKeyDown={e => handleKeyPress(e, handleSearch)} placeholder='Search Friend Name' /> */}
-                        <input type="text" className='chatMenuInput' ref={userNameRef} onKeyDown={e => handleKeyPress(e, handleSearch)} placeholder='Search Friend Name' />
+                        <input type="text" className='chatMenuInput' ref={userNameRef} onKeyDown={e => handleKeyPress(e, handleSearch)} placeholder="Search User's Name" />
                         {searchedUsers?.map( user => (
                             <div key={user.id} className='searchUser' onClick={()=> handleSelect(user)}>
                                 <img src={user.profileURL ? user.profileURL : pic} alt="img" className="searchUserImg" />
