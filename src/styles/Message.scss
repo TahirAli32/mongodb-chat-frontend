@@ -8,8 +8,8 @@
         .messageText{
             padding: 10px;
             border-radius: 0px 4px 4px 4px;
-            // background-color: #1877f2;
             background-color: #18f2ce;
+            word-wrap: break-word;
             color: #fff;
             max-width: 350px;
             position: relative;
@@ -38,7 +38,6 @@
     align-items: flex-end;
     .messageText{
         border-radius: 4px 0px 4px 4px;
-        // background-color: #dfdfdf;
         background-color: #e6d3bd;
         color: #000;
         &::before{
