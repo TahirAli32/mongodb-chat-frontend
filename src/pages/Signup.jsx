@@ -95,7 +95,6 @@ const Signup = () => {
   const SuccessHandler = (e) => {
     const res = JSON.parse(e.target.response)
     setProfile(res.data.url)
-    console.log(res.data.url)
   }
 
   return (
