@@ -50,14 +50,14 @@ const Messenger = () => {
             socket.emit('userJoin', currentUser)
             socket?.on("newConversationReceive", (userData) => setRandomKey(Math.random()))
             socket?.on("newMessage", ({senderID}) => {
-                setConversations([...conversations.filter(chat => chat.friendID === senderID), ...conversations.filter(chat => chat.friendID !== senderID)])
+                setConversations(prev => [...prev.filter(chat => chat.friendID === senderID), ...prev.filter(chat => chat.friendID !== senderID)])
             })
             if(data.chatID){
                 socket.emit('openChat', data.chatID)
                 socket?.on("receiveMessage", (chatData) => setMessages(prev => [...prev, chatData]))
             }
         }
-    }, [data, socket, currentUser, conversations])
+    }, [data, socket, currentUser])
 
     // fetchConversation useEffect
     useEffect(()=>{
@@ -106,7 +106,7 @@ const Messenger = () => {
             await axios.post(`${BACKEND_HOST}/api/chat`, dbData)
             socket.emit("sendMessage", { chatID: data.chatID, socketData, receiverID: data.user.id})
             setMessages(prev => [...prev, socketData])
-            setConversations([...conversations.filter(chat => chat.friendID === data.user.id), ...conversations.filter(chat => chat.friendID !== data.user.id)])
+            setConversations(prev => [...prev.filter(chat => chat.friendID === data.user.id), ...prev.filter(chat => chat.friendID !== data.user.id)])
             setText("")
         } catch (error) {
             console.log(error)
@@ -138,7 +138,7 @@ const Messenger = () => {
         dispatch({type: "CHANGE_USER", payload: userData})
         if(!res.data?.oldConversation){
             socket.emit("newConversationSend", {userData, currentUser} )
-            // setConversations(prev => [...prev, userData.id])
+            // setConversations(prev => [...prev, userData])
             setRandomKey(Math.random())
         }
         setSearchedUsers([])
