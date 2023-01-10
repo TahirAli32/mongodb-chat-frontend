@@ -14,16 +14,16 @@ const Signup = () => {
 
   const navigate = useNavigate()
 
-  const { currentUser } = useContext(AuthContext)
+  const { currentUser, domReady } = useContext(AuthContext)
 
   const [state, dispatch] = useReducer(requestReducer, INITIAL_STATE)
 
   useEffect(() => {
-    if(currentUser){
-      navigate('/')
+    if(domReady){
+      if(!currentUser) return
+      else navigate('/')
     }
-    return
-  }, [currentUser, navigate])
+  }, [currentUser, navigate, domReady])
 
   const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST
 

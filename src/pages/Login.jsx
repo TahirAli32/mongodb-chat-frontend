@@ -17,14 +17,14 @@ const Login = () => {
 
   const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST
 
-  const { currentUser } = useContext(AuthContext)
+  const { currentUser, domReady } = useContext(AuthContext)
 
   useEffect(() => {
-    if(currentUser){
-      navigate('/')
+    if(domReady){
+      if(!currentUser) return
+      else navigate('/')
     }
-    return
-  }, [currentUser, navigate])
+  }, [currentUser, navigate, domReady])
 
   const [emailInput, setEmail] = useState(false)
   const [passwordInput, setPassword] = useState(true)

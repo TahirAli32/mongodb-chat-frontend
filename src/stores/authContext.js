@@ -9,6 +9,8 @@ export const AuthContextProvider = ({children}) => {
     const BACKEND_HOST = process.env.REACT_APP_BACKEND_HOST
 
     const [currentUser, setCurrentUser] = useState("")
+    const [pageLoading, setPageLoading] = useState(true)
+    const [domReady, setDomReady] = useState(false)
 
     const authToken = Cookies.get('authToken')
 
@@ -30,10 +32,12 @@ export const AuthContextProvider = ({children}) => {
         }else{
             setCurrentUser("")
         }
+        setDomReady(true)
+        setTimeout(() => setPageLoading(false), 2000)
     }, [BACKEND_HOST, authToken])
 
     return(
-        <AuthContext.Provider value={{ currentUser }}>
+        <AuthContext.Provider value={{ currentUser, pageLoading, domReady }}>
             {children}
         </AuthContext.Provider>
     )

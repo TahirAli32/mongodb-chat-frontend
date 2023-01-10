@@ -20,7 +20,7 @@ const Messenger = () => {
 
     const [socket, setSocket] = useState(null)
     
-    const { currentUser } = useContext(AuthContext)
+    const { currentUser, domReady } = useContext(AuthContext)
     const { dispatch, data } = useContext(MessagesContext)
 
     const userNameRef = useRef()
@@ -40,9 +40,11 @@ const Messenger = () => {
 
     // Checking User Auth Login Status
     useEffect(() => {
-        if(currentUser) return
-        navigate('/login')
-    }, [currentUser, navigate, BACKEND_HOST])
+        if(domReady){
+            if(currentUser) return
+            else navigate('/login')
+        }
+    }, [currentUser, navigate, BACKEND_HOST, domReady])
 
     // Socket useEffect
     useEffect(()=>{
